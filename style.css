@@ -3,3 +3,253 @@
    margin: 0;
    padding: 0;
 }
+
+body {
+   width: 100vw;
+   height: 100vh;
+   background-color: rgb(235, 39, 234);
+   position: relative;
+}
+
+.green-header {
+   width: 100%;
+   height: 100px;
+   background-color: #128C7E;
+}
+
+.texture-bg {
+   width: 100%;
+   height: calc(100% - 100px);
+   background-color: #ECE5DD;
+}
+
+main {
+   width: 100%;
+   height: 100%;
+   margin: 0 auto;
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+}
+
+.contacts-ctn {
+   display: none;
+}
+
+
+.conversation-ctn {
+   display: flex;
+   width: 100%;
+   height: 100%;
+   background-color: rgb(80, 156, 215);
+}
+
+.conversation-ctn .profile-photo {
+   width: 38px;
+   height: 38px;
+   border-radius: 50%;
+}
+
+
+/* *** Media Queries *** */
+
+@media screen and (min-width : 768px) {
+
+   main {
+      width: 75%;
+      height: 90%;
+   }
+
+   .contacts-ctn {
+      display: block;
+      /* flex-direction: column; */
+      width: 35%;
+      height: 100%;
+      float: left;
+   }
+
+
+   .conversation-ctn {
+      display: flex;
+      width: 65%;
+      height: 100%;
+      float: left;
+      background: url("chat-bg.png") ;
+      background-size: 350px 175px; 
+   }
+
+   /* Navigation bars for contacts-ctn and conversation-ctn */
+   .section-nav {
+      display: flex;
+      width: 100%;
+      height: 45px;
+      justify-content: space-between;
+      background-color: #EDEDEE;
+   }
+
+   .contact-info {
+      height: 100%;
+      padding-left: 10px;
+   }
+
+   .utility-icons-ctn {
+      height: 100%;
+   }
+
+   .contact-info *, .utility-icons-ctn * {
+      float: left;
+   }
+
+   .profile-photo {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+   }
+
+   .contact-info > *, .photo-box > * {
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
+      margin: 0 5px;
+   }
+
+   i {
+      width: 35px;
+      text-align: center;
+   }
+
+   .fa-lg {
+      line-height: 45px;
+      font-size: 1em;
+      color: rgb(141, 144, 147);
+   }
+
+
+   /* Contacts search-bar */
+   .search-bar {
+      width: 100%;
+      height: 50px;
+      padding: 12px 0;
+      background-color: rgb(248, 248, 248);
+   }
+
+   #contacts-filter {
+      display: block;
+      width: 95%;
+      height: 24px;
+      margin: 0 auto;
+   }
+
+   #contacts-filter .fa-search {
+      float: left;
+      font-weight: 100;
+      color: rgb(184, 189, 200);
+   }
+
+   #contacts-search {
+      float: left;
+      height: 100%;
+      width: 80%;
+      background-color: rgb(255, 255, 255);
+      border: none;
+      color: rgb(184, 189, 200);
+   }
+
+   #contacts-search::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+      color: rgb(181, 187, 187);
+   }
+
+   /* Last conversations list */
+   .conversations-list {
+      width: 100%;
+      height: calc(100% - 95px);
+      overflow: scroll;
+      overflow-x:hidden;
+   }
+
+   .conversation-preview {
+      display: flex;
+      width: 100%;
+      height: 60px;
+      background-color: #FFF;
+   }
+
+   .photo-box {
+      height: 100%;
+      width: 60px;
+      text-align: center;
+   }
+
+   .preview {
+      display: flex;
+      width: 100%;
+      padding: 10px 5px;
+      justify-content: space-between;
+   }
+
+   .preview{
+      border-bottom: 0.01em solid rgb(227, 224, 224);
+   }
+
+   .conversation-preview .photo-box .profile-photo {
+      width: 45px;
+      height: 45px;
+   }
+
+   .msg-preview {
+      height: 75%;
+      width: 70px;
+   }
+
+   .chat-with {
+      font-size: 15px;
+   }
+
+   .last-msg {
+      font-size: 15px;
+      color: rgb(168, 156, 156);
+   }
+
+   .chat-with, .last-msg {
+      display: block;
+      margin: 2px 0;
+   }
+
+   .info-msg-preview {
+      float: right;
+   }
+
+   .time-last-msg {
+      transform: translateY(-70%);
+      color: rgb(168, 156, 156);
+      font-size: 13px;
+   }
+
+   /* Scrollbar style */
+   /* width */
+   .conversations-list::-webkit-scrollbar {
+      width: 8px;
+   }
+   /* track */
+   .conversations-list::-webkit-scrollbar-track {
+      background: #FFFFFF;
+
+   }
+   /* Handle */
+   .conversations-list::-webkit-scrollbar-thumb {
+      background: #d6d6e3;
+   }
+
+   .conversations-list::-webkit-scrollbar-track-piece {
+      height: 50px;
+   }
+   /* Handle on hover */
+   #players-list::-webkit-scrollbar-thumb:hover {
+      background: rgba(19, 53, 198, 1);
+   }
+
+   /* Conversation box */
+
+
+}
