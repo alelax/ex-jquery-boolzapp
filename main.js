@@ -6,15 +6,9 @@ $(document).ready(function(){
       var $messageSent = $('#input-msg').val();
       console.log($messageSent);
 
-      //Generea un nuovo messaggio, e lo inserisce alla fine della conversation-area
-      $('.conversation-area').append(
-         "<div class='message-row msg-sent'>"
-       +    "<div class='message-box'>"
-       +       $messageSent
-       +    "</div>"
-       + "</div>"  );
+      sendMessage($messageSent);
 
-      //Viene inserito un messaggio di risposta automatico "ok".
+      //Viene inserito, dopo un secondo, un messaggio di risposta automatico "ok".
       setTimeout(function(){
          $('.conversation-area').append(
             "<div class='message-row msg-received'>"
@@ -25,7 +19,18 @@ $(document).ready(function(){
       },1000);
 
 
-   })
+   });
+
+   //Funzione per l'invio di un messaggio
+   function sendMessage(textMessage) {
+      //Generea un nuovo messaggio, e lo inserisce alla fine della conversation-area
+      $('.conversation-area').append(
+         "<div class='message-row msg-sent'>"
+       +    "<div class='message-box'>"
+       +       textMessage
+       +    "</div>"
+       + "</div>"  );
+   }
 
 
 });
