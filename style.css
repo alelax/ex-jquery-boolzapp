@@ -109,8 +109,9 @@ i {
 /* Conversation box */
 
 .conversation-area {
-   display: flex;
+   /* display: flex;
    flex-direction: column;
+   justify-content: flex-start; */
    order: 2;
    width: 100%;
    max-height: calc(100% - 45px - 45px);
@@ -159,8 +160,8 @@ i {
    display: flex;
    flex-direction: column;
    width: 100%;
-   min-height: 60px;
-   max-height: 200px;
+   min-height: 40px;
+   /* max-height: 200px; */
    align-items: stretch;
    margin: 1px 0;
 }
