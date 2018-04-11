@@ -82,15 +82,13 @@ $(document).ready(function(){
    function isCharachterMatched(nameToSearch, instantInput) {
       var isCharsConteined = false;
       var noMatchCounter = 0;
-
-
       /*
          Questo controllo è indipendente dalla sequenza con la quale vengono inseriti
          i caratteri in input. Controlla che i caratteri siano contenuti nel nome senza
          tener conto dell'ordine.
          Il charAt all'interno del for permette di considerare e controllare ogni carattere
          singolarmente
-      */
+
 
       // for (var i = 0; i < instantInput.length; i++) {
       //    if ( !(nameToSearch.includes(instantInput.charAt(i))) ) {
@@ -98,20 +96,25 @@ $(document).ready(function(){
       //    }
       // }
 
+      //Il contatore maggiore di 0 indica che il nome non contiene tutti i caratteri,
+      //perciò la variabile verrà impostata a false, altrimenti a true
+      // if (noMatchCounter > 0) {
+      //    isCharsConteined = false;
+      // } else {
+      //    isCharsConteined = true;
+      // }
+
+      */
+
       //Controllo che il nome contenga i caratteri immessi dall'input. Se non li contiene
       //il contatore aumenta
       if ( !(nameToSearch.includes(instantInput)) ) {
          noMatchCounter++;
-      }
-
-      //Il contatore maggiore di 0 indica che il nome non contiene tutti i caratteri,
-      //perciò la variabile verrà impostata a false, altrimenti a true
-      if (noMatchCounter > 0) {
-      isCharsConteined = false;
+         isCharsConteined = false;
       } else {
-      isCharsConteined = true;
+         isCharsConteined = true;
       }
-
+      
       return isCharsConteined;
    }
 
