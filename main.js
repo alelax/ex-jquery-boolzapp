@@ -1,17 +1,26 @@
 var mexSentRowOpen = "<div class='message-row msg-sent'>",
     mexReceivedRowOpen = "<div class='message-row msg-received'>",
     mexBoxOpen = "<div class='message-box'>",
+    timeBoxOpen = "<span class='msg-time'>",
+    timeBoxClose = "</span>",
     mexBoxClose = "</div>";
     mexRowClose = "</div>",
 
 
 $(document).ready(function(){
-     // alert("ciao");
+   // alert("ciao");
 
    //Recupera il campo di input
    var $thisInput = $('#input-msg');
    var newMessage;
    var now = new Date();
+
+   var minutes;
+   if (now.getMinutes() < 10) {
+      minutes = parseInt('0' + now.getMinutes());
+   } else {
+      minutes = now.getMinutes();
+   }
 
    //Invio del messaggio tramite pressione del tasto Enter
    $('#input-msg').keypress(function(e) {
@@ -43,7 +52,7 @@ $(document).ready(function(){
    //recupero l'input tramite il suo id
    var searchContacts = $('#contacts-search');
 
-
+   //Ricerca filtrata contatti
    $('#contacts-search').keyup(function(e) {
 
       //recupero il contenuto dell'input
@@ -72,16 +81,39 @@ $(document).ready(function(){
 
       });
 
-
-
    });
 
+   $('.conversation-area.visible').scrollTop($('.conversation-area.visible')[0].scrollHeight);
+
+   //Mostro la conversazione relativa al contatto cliccato
+   $('.conversation-preview').click(function(){
+      //recupero la conversazione attualmente mostrata; la nascondo aggiungento la classe hidden
+      var conversationDisplayed = $('.conversation-area.visible');
+      conversationDisplayed.removeClass('visible').addClass('hidden');
+      console.log(conversationDisplayed);
+      //recupero il contatto cliccato salvando in una variabile il suo id. Questo verrà utilizzato
+      //per prendere la relativa conversazione e mostrarla
+      var contactClicked = $(this);
+      var contactId = contactClicked.attr('id');
+      var currentConversation = $('.'+contactId+'.conversation-area');
+      currentConversation.removeClass('hidden').addClass('visible');
+      updateConversationInfo(contactClicked);
+      $('.conversation-area.visible').scrollTop($('.conversation-area.visible')[0].scrollHeight);
+      // currentConversation.scrollTop(currentConversation.scrollHeight);
+   });
+
+
+
+   //Metodo che permette di tenere la scrollbar fissa in basso per visualizzare sempre l'ultimo
+   //messaggio inviato/ricevuto
+   /* * * * * * Functions * * * * * */
 
    //Funzione che riceve il nome del contatto corrente (nameToSearch) e l'input immesso
    //dall'utente
    function isCharachterMatched(nameToSearch, instantInput) {
       var isCharsConteined = false;
       var noMatchCounter = 0;
+
       /*
          Questo controllo è indipendente dalla sequenza con la quale vengono inseriti
          i caratteri in input. Controlla che i caratteri siano contenuti nel nome senza
@@ -114,7 +146,7 @@ $(document).ready(function(){
       } else {
          isCharsConteined = true;
       }
-      
+
       return isCharsConteined;
    }
 
@@ -122,9 +154,12 @@ $(document).ready(function(){
    function sendMessage(textMessage) {
       //Generea un nuovo messaggio, e lo inserisce alla fine della conversation-area
       if (textMessage) {
-         $('.conversation-area').append(
-            mexSentRowOpen + mexBoxOpen + textMessage + mexBoxClose + mexRowClose
+
+         $('.conversation-area.visible').append(
+            mexSentRowOpen + mexBoxOpen + textMessage + timeBoxOpen + now.getHours() + " : " + minutes + timeBoxClose +  mexBoxClose + mexRowClose
          );
+         $('.conversation-area.visible').scrollTop($('.conversation-area.visible')[0].scrollHeight);
+
       }
    }
 
@@ -133,12 +168,32 @@ $(document).ready(function(){
       inputField.val('');
    }
 
+   //Funzione che invia una risposta standard ok un secondo dopo l'invio di un messaggio
    function defaultAnswer() {
       setTimeout(function(){
          $('.conversation-area').append(
-            mexReceivedRowOpen + mexBoxOpen + "ok" + mexBoxClose + mexRowClose
+            mexReceivedRowOpen + mexBoxOpen + "ok" + timeBoxOpen + now.getHours() + " : " + minutes + timeBoxClose + mexBoxClose + mexRowClose
          );
+         $('.conversation-area.visible').scrollTop($('.conversation-area.visible')[0].scrollHeight);
+
       },1000);
    }
+
+   //Funzione che riceve come parametro un oggetto JQuery che rappresenta il contatto cliccato
+   //Recupera la foto e il nome del contatto e aggiorna la nav bar del box conversazione
+   //inserendo foto e nome del contatto cliccato
+   function updateConversationInfo(contactClicked) {
+
+      var contactPhoto = contactClicked.children('.photo-box').children('.profile-photo').attr('src');
+      var contactName = contactClicked.children('.preview').children('.msg-preview').children('.chat-with').text();
+
+      //Recuepero il box contenente foto e nome della navBar
+      var conversationNav = $('.conversation-ctn').children('.section-nav').children('.contact-info');
+      conversationNav.children('.profile-photo').attr('src', contactPhoto);
+      conversationNav.children('.chat-with').text(contactName);
+   }
+
+
+
 
 });
