@@ -211,6 +211,7 @@ i {
    line-height: 20px;
    font-size: 15px;
    color: #B6B9BB;
+   cursor: pointer;
 }
 
 .msg-dropdown {
@@ -223,6 +224,7 @@ i {
    border-radius: 5px;
    z-index: 5;
    background-color: inherit;
+   cursor: pointer;
 
 }
 

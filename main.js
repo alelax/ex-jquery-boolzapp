@@ -3,8 +3,22 @@ var mexSentRowOpen = "<div class='message-row msg-sent'>",
     mexBoxOpen = "<div class='message-box'>",
     timeBoxOpen = "<span class='msg-time'>",
     timeBoxClose = "</span>",
-    mexBoxClose = "</div>";
-    mexRowClose = "</div>",
+    mexBoxClose = "</div>",
+    mexRowClose = "</div>";
+
+//Struttura HTML contenente l'icona del dropdown menu interna al box messaggio
+var msgIconOpen = "<span class='msg-icon'>",
+    faIconOpen = "<i class='fa fa-angle-down fa-lg' aria-hidden='true'>",
+    faIconClose = "</i>",
+    msgIconClose = "</span>",
+    msgIcon = msgIconOpen + faIconOpen + faIconClose + msgIconClose;
+
+
+//Struttura HTML dropdown menu interno ad ogni messaggio
+var dropMenuOpen = "<div class='msg-dropdown'>",
+    dropMenuDelete = "<div id='delete'>Elimina</div>",
+    dropMenuClose = "</div>",
+    dropMenu = dropMenuOpen + dropMenuDelete + dropMenuClose;
 
 
 $(document).ready(function(){
@@ -83,6 +97,8 @@ $(document).ready(function(){
 
    });
 
+   //Metodo che permette di tenere la scrollbar fissa in basso per visualizzare sempre l'ultimo
+   //messaggio inviato/ricevuto
    $('.conversation-area.visible').scrollTop($('.conversation-area.visible')[0].scrollHeight);
 
    //Mostro la conversazione relativa al contatto cliccato
@@ -102,10 +118,35 @@ $(document).ready(function(){
       // currentConversation.scrollTop(currentConversation.scrollHeight);
    });
 
+   //Facendo Hover sul singolo messaggio, aggiungo l'icona del menu e la mostro, uscendo
+   //dall'area del messaggio la nascondo e rimuovo
+   $('.message-box').hover(
+      function(){
+         //Aggiungo l'icona del menu all'elemento corrente
+         $(this).append(msgIcon);
+         //al click dell'icona aggiungo il dropdown menu e lo visualizzo
+         $('.msg-icon').click(function(){
+            var msgClicked = $(this).parent();
+            msgClicked.append(dropMenu);
+            //Al click della voce "Elimina" del dropdown menu recupero il messaggio
+            //in oggetto e lo elimino
+            $('#delete').click(function(){
+               console.log($(this).parent().parent().remove());
+            });
+         });
+      },
+      function(){
+         var element = $(this);
+         element.children().remove('.msg-icon');
+         element.children().remove('.msg-dropdown');
+      }
 
 
-   //Metodo che permette di tenere la scrollbar fissa in basso per visualizzare sempre l'ultimo
-   //messaggio inviato/ricevuto
+   );
+
+
+
+
    /* * * * * * Functions * * * * * */
 
    //Funzione che riceve il nome del contatto corrente (nameToSearch) e l'input immesso
@@ -171,7 +212,7 @@ $(document).ready(function(){
    //Funzione che invia una risposta standard ok un secondo dopo l'invio di un messaggio
    function defaultAnswer() {
       setTimeout(function(){
-         $('.conversation-area').append(
+         $('.conversation-area.visible').append(
             mexReceivedRowOpen + mexBoxOpen + "ok" + timeBoxOpen + now.getHours() + " : " + minutes + timeBoxClose + mexBoxClose + mexRowClose
          );
          $('.conversation-area.visible').scrollTop($('.conversation-area.visible')[0].scrollHeight);
