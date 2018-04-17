@@ -20,6 +20,14 @@ var dropMenuOpen = "<div class='msg-dropdown'>",
     dropMenuClose = "</div>",
     dropMenu = dropMenuOpen + dropMenuDelete + dropMenuClose;
 
+//Struttura HTML del "triangolo" presente solo nel primo messaggio nella inserisce
+//di messaggi inviati/ricevuti precedente alla serie successiva
+var rightTrinagleOpen = "<span class='first-new-sent-msg'>",
+    rightTrinagleClose = "</span>",
+    rightTrinagle = rightTrinagleOpen + rightTrinagleClose;
+var leftTrinagleOpen = "<span class='first-new-received-msg'>",
+    leftTrinagleClose = "</span>",
+    leftTrinagle = leftTrinagleOpen + leftTrinagleClose;
 
 $(document).ready(function(){
    // alert("ciao");
@@ -118,34 +126,30 @@ $(document).ready(function(){
       // currentConversation.scrollTop(currentConversation.scrollHeight);
    });
 
-   //Facendo Hover sul singolo messaggio, aggiungo l'icona del menu e la mostro, uscendo
-   //dall'area del messaggio la nascondo e rimuovo
-   $('.message-box').hover(
-      function(){
-         //Aggiungo l'icona del menu all'elemento corrente
-         $(this).append(msgIcon);
-         //al click dell'icona aggiungo il dropdown menu e lo visualizzo
-         $('.msg-icon').click(function(){
-            var msgClicked = $(this).parent();
-            msgClicked.append(dropMenu);
-            //Al click della voce "Elimina" del dropdown menu recupero il messaggio
-            //in oggetto e lo elimino
-            $('#delete').click(function(){
-               console.log($(this).parent().parent().remove());
-            });
+   //Con i metodi mouseenter sul singolo messaggio, aggiungo l'icona del menu e la mostro,
+   //con mouseleave uscendo dall'area del messaggio la nascondo e rimuovo
+   $(document).on('mouseenter', '.message-box', function(){
+   //Aggiungo l'icona del menu all'elemento corrente
+      $(this).append(msgIcon);
+      //al click dell'icona aggiungo il dropdown menu e lo visualizzo
+      $('.msg-icon').click(function(){
+         var msgClicked = $(this).parent();
+         msgClicked.append(dropMenu);
+         //Al click della voce "Elimina" del dropdown menu recupero il messaggio
+         //in oggetto e lo elimino
+         $('#delete').click(function(){
+            console.log($(this).parent().parent().remove());
          });
-      },
-      function(){
+      });
+   });
+
+   $(document).on('mouseleave', '.message-box', function(){
          var element = $(this);
          element.children().remove('.msg-icon');
          element.children().remove('.msg-dropdown');
-      }
+   });
 
-
-   );
-
-
-
+   //appendTriangle();
 
    /* * * * * * Functions * * * * * */
 
@@ -200,7 +204,7 @@ $(document).ready(function(){
             mexSentRowOpen + mexBoxOpen + textMessage + timeBoxOpen + now.getHours() + " : " + minutes + timeBoxClose +  mexBoxClose + mexRowClose
          );
          $('.conversation-area.visible').scrollTop($('.conversation-area.visible')[0].scrollHeight);
-
+         appendTriangle();
       }
    }
 
@@ -216,7 +220,7 @@ $(document).ready(function(){
             mexReceivedRowOpen + mexBoxOpen + "ok" + timeBoxOpen + now.getHours() + " : " + minutes + timeBoxClose + mexBoxClose + mexRowClose
          );
          $('.conversation-area.visible').scrollTop($('.conversation-area.visible')[0].scrollHeight);
-
+         appendTriangle();
       },1000);
    }
 
@@ -234,7 +238,22 @@ $(document).ready(function(){
       conversationNav.children('.chat-with').text(contactName);
    }
 
+   //Inserisce i triangolini all'angolo sinistro o destro del messaggio
+   function appendTriangle() {
+      $('.message-row').each(function(){
+         var mexCurrent = $(this);
+         prevMex = mexCurrent.prev('.message-row');
 
-
+         if (mexCurrent.hasClass('msg-received')) {
+            if ( !(prevMex.hasClass('msg-received')) && ( !(mexCurrent.children().hasClass('.first-new-received-msg')) ) ) {
+               mexCurrent.append(leftTrinagle);
+            }
+         }  else if (mexCurrent.hasClass('msg-sent')) {
+            if( !(prevMex.hasClass('msg-sent')) ) {
+               mexCurrent.append(rightTrinagle);
+            }
+         }
+      });
+   }
 
 });
